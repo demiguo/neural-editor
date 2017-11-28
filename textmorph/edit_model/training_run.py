@@ -392,11 +392,11 @@ class EditTrainingRun(TorchTrainingRun):
         with random_state(train_state.random_state):
             editor = train_state.editor
             optimizer = train_state.optimizer
-            noiser = EditNoiser(config.editor.ident_pr, config.editor.attend_pr)
-            train_batches = similar_size_batches(examples.train, config.optim.batch_size)
+            noiser = EditNoiser(config.editor.ident_pr, config.editor.attend_pr) # Q(demi): what is the functionality of noiser?
+            train_batches = similar_size_batches(examples.train, config.optim.batch_size). # Q(demi): what is similar size batches?
 
             # test batching!
-            editor.test_batch(noiser(train_batches[0]))
+            editor.test_batch(noiser(train_batches[0])). # Q(demi): what is test batching?
 
             while True:
                 # TODO(kelvin): this shuffle and the position within the shuffle is not properly restored upon reload

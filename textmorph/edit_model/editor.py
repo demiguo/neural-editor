@@ -37,7 +37,7 @@ class Editor(Module):
         self.test_decoder_beam = BeamDecoder(decoder_cell, token_embedder, context_combiner)
 
     @classmethod
-    def _batch_editor_examples(cls, examples):
+    def _batch_editor_examples(cls, examples):  # NB(demi): you want delete_words and insert_words for convenience to calculate f(x, x') in q prob distribution
         batch = lambda attr: [getattr(ex, attr) for ex in examples]
         source_words = batch('source_words')
         insert_words = batch('insert_words')
