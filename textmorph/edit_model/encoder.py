@@ -57,7 +57,7 @@ class Encoder(Module):
         super(Encoder, self).__init__()
 
         self.word_vocab = token_embedder.vocab
-        self.token_embedder = token_embedder
+        self.token_embedder = token_embedder. # Q(demi): token embedder embeds words?
         self.agenda_dim = agenda_dim
         self.edit_dim = edit_dim
         word_dim = token_embedder.embed_dim
@@ -66,7 +66,7 @@ class Encoder(Module):
 
         self.source_encoder = MultiLayerSourceEncoder(word_dim, hidden_dim, num_layers, rnn_cell_factory)
         self.edit_encoder = EditEncoder(word_dim, edit_dim, lamb_reg, norm_eps, norm_max)
-        self.agenda_maker = AgendaMaker(self.source_encoder.hidden_dim, self.edit_dim, self.agenda_dim)
+        self.agenda_maker = AgendaMaker(self.source_encoder.hidden_dim, self.edit_dim, self.agenda_dim)  # Q(demi): what is agenda_maker?
 
     def preprocess(self, source_words, insert_words, insert_exact_words, delete_words, delete_exact_words, edit_embed):
         """Preprocess.
@@ -93,7 +93,7 @@ class Encoder(Module):
         # insert_words and delete_words will often be empty, but we still enforce a min_seq_length of 1 to avoid
         # creating Tensors with dimensions of 0, which some Torch function will choke on.
 
-    def _vmfKL(self, k, d):
+    def _vmfKL(self, k, d):  # Q(demi): when do we call vmfKL
         return k*((sp.special.iv(d/2.0+1.0,k)\
                    + sp.special.iv(d/2.0,k)*d/(2.0*k))/sp.special.iv(d/2.0, k) - d/(2.0*k))\
                    + d * np.log(k)/2.0 - np.log(sp.special.iv(d/2.0,k)) \
@@ -116,20 +116,22 @@ class Encoder(Module):
         Returns:
             EncoderOutput
         """
-        source_words = encoder_input.source_words
+        source_words = encoder_input.source_words. # Q(demi): what is source_words?
         source_word_embeds = self.token_embedder.embed_seq_batch(source_words)
-        source_encoder_output = self.source_encoder(source_word_embeds.split())
+        source_encoder_output = self.source_encoder(source_word_embeds.split())  # Q(demi): why do you need to split?
         source_embeds_list = source_encoder_output.combined_states
         source_embeds = SequenceBatch.cat(source_embeds_list)
         # the final hidden states in both the forward and backward direction, concatenated
         source_embeds_final = torch.cat(source_encoder_output.final_states, 1)  # (batch_size, hidden_dim)
 
+        # Q(demi): what is the difference between insert_words and insert_exact_words? 
         insert_embeds = self.token_embedder.embed_seq_batch(encoder_input.insert_words)
         delete_embeds = self.token_embedder.embed_seq_batch(encoder_input.delete_words)
 
         insert_embeds_exact = self.token_embedder.embed_seq_batch(encoder_input.insert_exact_words)
         delete_embeds_exact = self.token_embedder.embed_seq_batch(encoder_input.delete_exact_words)
 
+        # Q(demi): what is "seq_batch_noise"? why do you add noise to insert and delete separately? not after the operation? 
         insert_noisy_exact = self.edit_encoder.seq_batch_noise(insert_embeds_exact, draw_samples)
         delete_noisy_exact = self.edit_encoder.seq_batch_noise(delete_embeds_exact, draw_samples)
 

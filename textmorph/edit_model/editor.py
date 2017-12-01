@@ -70,7 +70,7 @@ class Editor(Module):
         source_words, insert_words, insert_exact_words, delete_words, delete_exact_words, target_words, edit_embed = self._batch_editor_examples(
             examples)
         encoder_input = self.encoder.preprocess(source_words, insert_words, insert_exact_words, delete_words,
-                                                delete_exact_words, edit_embed)
+                                                delete_exact_words, edit_embed)  # Q(demi): what is "preprocess"?
         train_decoder_input = TrainDecoderInput(target_words, self.train_decoder.word_vocab)
         return EditorInput(encoder_input, train_decoder_input)
 
