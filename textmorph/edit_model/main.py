@@ -1,16 +1,18 @@
 import argparse
-
+import sys
+sys.path.append("../../gtd")
+sys.path.append("../")
+from textmorph.edit_model.training_run import EditTrainingRuns
 from gtd.io import save_stdout
 from gtd.log import set_log_level
 from gtd.utils import Config
-from textmorph.edit_model.training_run import EditTrainingRuns
 
 set_log_level('DEBUG')
 
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('exp_id', nargs='+')
-arg_parser.add_argument('-c', '--check_commit', default='strict'). #Q(demi): what is check commit
+arg_parser.add_argument('-c', '--check_commit', default='strict') #Q(demi): what is check commit
 arg_parser.add_argument('-p', '--profile', action='store_true') # Q(demi): what is profile?
 args = arg_parser.parse_args()
 

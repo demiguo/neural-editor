@@ -57,7 +57,7 @@ class Encoder(Module):
         super(Encoder, self).__init__()
 
         self.word_vocab = token_embedder.vocab
-        self.token_embedder = token_embedder. # Q(demi): token embedder embeds words?
+        self.token_embedder = token_embedder # Q(demi): token embedder embeds words?
         self.agenda_dim = agenda_dim
         self.edit_dim = edit_dim
         word_dim = token_embedder.embed_dim
@@ -116,7 +116,7 @@ class Encoder(Module):
         Returns:
             EncoderOutput
         """
-        source_words = encoder_input.source_words. # Q(demi): what is source_words?
+        source_words = encoder_input.source_words # Q(demi): what is source_words?
         source_word_embeds = self.token_embedder.embed_seq_batch(source_words)
         source_encoder_output = self.source_encoder(source_word_embeds.split())  # Q(demi): why do you need to split?
         source_embeds_list = source_encoder_output.combined_states
